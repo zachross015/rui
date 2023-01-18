@@ -5,19 +5,19 @@ mod vbr {
     }
 
     impl Builder {
-        pub fn vstack<'a>(&self, v: &'a mut Builder) -> &'a mut Builder {
+        pub fn vstack<'a>(&self, v: Result<'a>) -> Result<'a> {
             panic!("vstack not yet implemented")
         }
 
-        pub fn hstack<'a>(&self, v: &'a mut Builder) -> &'a mut Builder {
+        pub fn hstack<'a>(&self, v: Result<'a>) -> Result<'a> {
             panic!("hstack not yet implemented")
         }
 
-        pub fn zstack<'a>(&self, v: &'a mut Builder) -> &'a mut Builder {
+        pub fn zstack<'a>(&self, v: Result<'a>) -> Result<'a> {
             panic!("zstack not yet implemented")
         }
 
-        pub fn text<'a>(&self, text: &str) -> &'a mut Builder {
+        pub fn text<'a>(&self, text: &str) -> Result<'a> {
             panic!("text not yet implemented")
         }
     }
@@ -40,12 +40,12 @@ mod vbr {
 struct HStack {}
 impl vbr::View for HStack  {
     fn vbr(&self, v: &mut vbr::Builder) -> vbr::Result {
-        Ok(v.vstack({
+        v.vstack({
             v.hstack({
                 v.text("Hello World");
                 v.text("Goodbye World")
             })
-        }))
+        })
     } 
 }
 
