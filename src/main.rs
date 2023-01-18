@@ -5,19 +5,19 @@ mod vbr {
     }
 
     impl Builder {
-        pub fn vstack(&self, v: &'static mut Builder) -> &'static mut Builder {
+        pub fn vstack<'a>(&self, v: &'a mut Builder) -> &'a mut Builder {
             panic!("vstack not yet implemented")
         }
 
-        pub fn hstack(&self, v: &'static mut Builder) -> &'static mut Builder {
+        pub fn hstack<'a>(&self, v: &'a mut Builder) -> &'a mut Builder {
             panic!("hstack not yet implemented")
         }
 
-        pub fn zstack(&self, v: &'static mut Builder) -> &'static mut Builder {
+        pub fn zstack<'a>(&self, v: &'a mut Builder) -> &'a mut Builder {
             panic!("zstack not yet implemented")
         }
 
-        pub fn text(&self, text: &str) -> &'static mut Builder {
+        pub fn text<'a>(&self, text: &str) -> &'a mut Builder {
             panic!("text not yet implemented")
         }
     }
