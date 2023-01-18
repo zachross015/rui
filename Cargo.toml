@@ -1,5 +1,5 @@
 [package]
-name = "hui"
+name = "vbr"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 
 [[bin]]
-name = "hui"
+name = "vbr"
 path = "src/main.rs"

@@ -1,4 +1,4 @@
-mod vb {
+mod vbr {
 
     pub struct Builder {
         // TODO: Implement these
@@ -32,14 +32,14 @@ mod vb {
     pub type Result<'a> = std::result::Result<&'a mut Builder, Error>;
 
     pub trait View {
-        fn vb(&self, v: &mut Builder) -> Result; 
+        fn vbr(&self, v: &mut Builder) -> Result; 
     }
     
-} /* vb */
+} /* vbr */
 
 struct HStack {}
-impl vb::View for HStack  {
-    fn vb(&self, v: &mut vb::Builder) -> vb::Result {
+impl vbr::View for HStack  {
+    fn vbr(&self, v: &mut vbr::Builder) -> vbr::Result {
         Ok(v.vstack({
             v.hstack({
                 v.text("Hello World");
