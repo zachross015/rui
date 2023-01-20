@@ -1,7 +1,7 @@
 use super::builder::Builder;
 
 pub struct Error {
-    msg: String 
+    msg: String
 }
 impl Error {
     pub fn new(msg: &str) -> Self {

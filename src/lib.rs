@@ -1,8 +1,13 @@
-mod vbr;
+mod prototype;
+pub mod types;
+pub mod builder;
+
+use types::{View, Result};
+use builder::Builder;
 
 struct Dummy {}
-impl vbr::View for Dummy  {
-    fn vbr(&mut self, v: &mut vbr::Builder) -> vbr::Result {
+impl View for Dummy  {
+    fn vbr(&mut self, v: &mut Builder) -> Result {
         v.hstack(|v| {
             v.vstack(|v| {
                 v.text("Hello World");
@@ -13,7 +18,7 @@ impl vbr::View for Dummy  {
 }
 
 fn main() {
-    let mut builder = vbr::Builder::new();
+    let mut builder = Builder::new();
     builder.view(Dummy {});
     println!("{:#?}", builder);
 }
