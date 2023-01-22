@@ -1,4 +1,7 @@
 use std::collections::LinkedList;
+use std::rc::Rc;
+use std::cell::RefCell;
+
 use super::types::{Error, Result, View};
 use super::prototype::{Type, Prototype};
 
@@ -14,7 +17,7 @@ use super::prototype::{Type, Prototype};
 /// This is where the View should be contstructed on a per-struct basis.
 #[derive(Debug)]
 pub struct Builder {
-    tree: LinkedList<LinkedList<Prototype>>
+    tree: LinkedList<Prototype>
 }
 
 impl Builder {
@@ -28,32 +31,18 @@ impl Builder {
 impl Builder {
 
     pub fn container<F>(&mut self, build: F) -> Result where F: Fn(&mut Builder) -> Result {
-        match build(self) {
-            Ok(_u) => Err(Error::new("container not implemented")),
-            Err(e) => Err(e),
-        }
-    }
-
-    pub fn vstack<F>(&mut self, build: F) -> Result where F: Fn(&mut Builder) -> Result {
-        self.container(build)
-    }
-
-    pub fn hstack<F>(&mut self, build: F) -> Result where F: Fn(&mut Builder) -> Result {
-        self.container(build)
-    }
-
-    pub fn zstack<F>(&mut self, build: F) -> Result where F: Fn(&mut Builder) -> Result {
-        self.container(build)
+        let mut b = Builder::new();
+        build(&mut b)?;
+        self.tree.push_back(Prototype::container(b));
+        Ok(())
     }
 
     pub fn text(&mut self, t: &str) -> Result {
-        Err(Error::new("text properly implemented"))
+        self.tree.push_back(Prototype::value(t));
+        Ok(())
     }
 
     pub fn view<T: View>(&mut self, mut t: T) -> Result {
-        match t.vbr(self) {
-            Ok(_u) => Ok(()),
-            Err(e) => Err(e),
-        }
+        t.vbr(self)
     }
 }

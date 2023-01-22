@@ -1,8 +1,10 @@
+use super::builder::Builder;
+
 #[derive(Debug)]
 pub enum Type {
     Atom,
     Value(String),
-    Container
+    Container(Builder)
 }
 
 #[derive(Debug)]
@@ -24,9 +26,9 @@ impl Prototype {
         }
     }
 
-    pub fn container() -> Self {
+    pub fn container(b: Builder) -> Self {
         Self { 
-            contents: Type::Container,
+            contents: Type::Container(b),
             background_color: [255, 255, 255, 255],
             foreground_color: [0, 0, 0, 255],
             padding: [0.0; 4]

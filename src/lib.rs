@@ -8,18 +8,20 @@ use builder::Builder;
 struct Dummy {}
 impl View for Dummy  {
     fn vbr(&mut self, v: &mut Builder) -> Result {
-        v.hstack(|v| {
-            v.vstack(|v| {
-                v.text("Hello World");
+        v.container(|v| {
+            v.container(|v| {
+                v.text("Hello World")?;
                 v.text("Goodbye World")
-            })
+            })?;
+            v.text("Another world")
         })
     } 
 }
 
 fn main() {
     let mut builder = Builder::new();
-    builder.view(Dummy {});
-    println!("{:#?}", builder);
+    let d = Dummy {};
+    let a = builder.view(d);
+    println!("{:#?}, {:#?}", builder, a);
 }
 
