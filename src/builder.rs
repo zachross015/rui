@@ -30,15 +30,18 @@ impl Builder {
 
 impl Builder {
 
-    pub fn container<F>(&mut self, build: F) -> Result where F: Fn(&mut Builder) -> Result {
+    pub fn container<F>(&mut self, vbr: F) -> Result where F: Fn(&mut Builder) -> Result {
         let mut b = Builder::new();
-        build(&mut b)?;
-        self.tree.push_back(Prototype::container(b));
+        vbr(&mut b)?;
+
+        let mut p = Prototype::container(b);
+        self.tree.push_back(p);
         Ok(())
     }
 
     pub fn text(&mut self, t: &str) -> Result {
-        self.tree.push_back(Prototype::value(t));
+        let mut p = Prototype::value(t);
+        self.tree.push_back(p);
         Ok(())
     }
 
