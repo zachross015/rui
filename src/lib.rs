@@ -19,7 +19,7 @@ impl View for Dummy  {
 
 fn main() {
     let mut builder = Builder::new();
-    builder.view(Test {});
+    builder.view(Dummy {});
     println!("{:#?}", builder);
 }
 
