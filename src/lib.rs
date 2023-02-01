@@ -42,6 +42,6 @@ impl View for External {
 fn main() {
     let mut builder = Builder::new();
     let a = builder.view(External {});
-    println!(",{:#?}", a);
+    println!("{}", a);
 }
 

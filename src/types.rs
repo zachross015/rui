@@ -1,19 +1,5 @@
 use std::fmt::Debug;
-use super::prototype::Prototype;
 use super::builder::Builder;
-
-/// Custom error type for dealing with error messages that derive from vbr. 
-///
-/// todo: Derive / implement the rust error trait.
-#[derive(Debug)]
-pub struct Error {
-    msg: String
-}
-impl Error {
-    pub fn new(msg: &str) -> Self {
-        Self { msg: msg.to_string() }
-    }
-}
 
 /// Type for communicating Builder / Error signals that result from the output 
 /// of the `Builder` class. Should be used to chain together builders via ? notation.

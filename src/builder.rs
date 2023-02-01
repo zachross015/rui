@@ -1,4 +1,5 @@
 use std::collections::LinkedList;
+use std::fmt::Display;
 use super::types::{Result, View};
 use super::prototype::{Prototype, Style};
 
@@ -109,4 +110,11 @@ impl Builder {
     pub fn background_color(&mut self, r: u8, g: u8, b: u8, a: u8) -> Result {
         self.add_style(Style::BackgroundColor(r, g, b, a))
     }   
+}
+
+impl Display for Builder {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = self.tree.iter().map(|x| x.to_string()).collect::<String>();
+        write!(f, "{}", s)
+    }
 }
