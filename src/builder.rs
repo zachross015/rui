@@ -1,7 +1,15 @@
 use std::collections::LinkedList;
 use std::fmt::Display;
+
 use super::types::{Result, View};
-use super::prototype::{Prototype, Style};
+use super::prototype::Prototype;
+use super::style::{
+    Style,
+    Color,
+    Alignment,
+    Direction,
+};
+
 
 /// Structure for building user interfaces idiomatically.
 ///
@@ -68,7 +76,7 @@ impl Builder {
     ///     } 
     /// }
     /// ```
-    pub fn container<F>(&mut self, vbr: F) -> Result where F: Fn(&mut Builder) -> Result {
+    fn container<F>(&mut self, vbr: F) -> Result where F: Fn(&mut Builder) -> Result {
         let mut b = Builder::new();
         vbr(&mut b);
 
@@ -77,10 +85,23 @@ impl Builder {
         self
     }
 
+    fn direction(&mut self, d: Direction) -> Result {
+        self.add_style(Style::Direction(d))
+    }
+
+
+    pub fn vstack<F>(&mut self, vbr: F) -> Result where F: Fn(&mut Builder) -> Result {
+        self.container(vbr).direction(Direction::Vertical).alignment(Alignment::Center)
+    }
+
+    pub fn hstack<F>(&mut self, vbr: F) -> Result where F: Fn(&mut Builder) -> Result {
+        self.container(vbr).direction(Direction::Horizontal).alignment(Alignment::Center)
+    }
+
     pub fn text(&mut self, t: &str) -> Result {
         let p = Prototype::value(t);
         self.tree.push_back(p);
-        self
+        self.alignment(Alignment::Center)
     }
 
     /// Constructs a custom (i.e. user created) view in the current builder.
@@ -103,13 +124,17 @@ impl Builder {
         self.add_style(Style::Padding(top, left, bottom, right))
     }   
 
-    pub fn foreground_color(&mut self, r: u8, g: u8, b: u8, a: u8) -> Result {
-        self.add_style(Style::ForegroundColor(r, g, b, a))
+    pub fn foreground_color(&mut self, c: Color) -> Result {
+        self.add_style(Style::ForegroundColor(c))
     }   
 
-    pub fn background_color(&mut self, r: u8, g: u8, b: u8, a: u8) -> Result {
-        self.add_style(Style::BackgroundColor(r, g, b, a))
+    pub fn background_color(&mut self, c: Color) -> Result {
+        self.add_style(Style::BackgroundColor(c))
     }   
+
+    pub fn alignment(&mut self, a: Alignment) -> Result {
+        self.add_style(Style::Alignment(a))
+    }
 }
 
 impl Display for Builder {

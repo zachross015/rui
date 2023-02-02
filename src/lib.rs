@@ -1,7 +1,9 @@
 mod prototype;
+pub mod style;
 pub mod types;
 pub mod builder;
 
+use style::{Color, Alignment, Direction};
 use types::{View, Result};
 use builder::Builder;
 
@@ -16,16 +18,17 @@ impl Dummy {
 }
 impl View for Dummy  {
     fn vbr<'a>(&'a mut self, v: &'a mut Builder) -> Result {
-        v.container(|v| {
-            v.container(|v| {
-                v.text(&self.msg);
+        v.vstack(|v| {
+            v.hstack(|v| {
+                v.text(&self.msg).padding(10, 10, 10, 10);
                 v.text("Goodbye World")
             });
             v.text("Another world")
-                .padding(0, 0, 0, 0);
+                .padding(100, 100, 100, 100);
             v.text("Red Text")
-                .foreground_color(255, 0, 0, 255)
-                .background_color(0, 0, 0, 255)
+                .foreground_color(Color::rgba(255, 0, 0, 255))
+                .background_color(Color::rgba(0, 0, 0, 255))
+                .alignment(Alignment::Trailing)
         })
     } 
 }
@@ -42,6 +45,7 @@ impl View for External {
 fn main() {
     let mut builder = Builder::new();
     let a = builder.view(External {});
-    println!("{}", a);
+    println!("<body style=\"position: absolute; min-height: 100vh; min-width: 100vw; margin: 0; display: flex; flex-direction: row; justify-content: center;
+    align-items: center;\">{}</body>", a);
 }
 
