@@ -31,12 +31,24 @@ impl Color {
 }
 
 #[derive(Debug)]
+pub struct Font {
+    size: u16,
+}
+impl Font {
+    pub fn size(size: u16) -> Self {
+        Self { size: size }
+    }
+}
+
+#[derive(Debug)]
 pub enum Style {
-    Padding(i8, i8, i8, i8),
+    Padding(u16, u16, u16, u16),
     ForegroundColor(Color),
     BackgroundColor(Color),
     Direction(Direction),
     Alignment(Alignment),
+    Bold,
+    Font(Font),
 }
 
 impl Display for Style {
@@ -50,10 +62,12 @@ impl Display for Style {
                 Direction::Vertical => write!(f, "flex-direction: column;"),
             }
             Style::Alignment(a) => match a {
-                Alignment::Leading => write!(f, "justify-content: flex-start;"),
-                Alignment::Center => write!(f, "justify-content: center;"),
-                Alignment::Trailing => write!(f, "justify-content: flex-end;"),
+                Alignment::Leading => write!(f, "align-items: flex-start;"),
+                Alignment::Center => write!(f, "align-items: baseline;"),
+                Alignment::Trailing => write!(f, "align-items: flex-end;"),
             }
+            Style::Bold => write!(f, "font-weight: bold;"),
+            Style::Font(fs) => write!(f, "font-size: {}px", fs.size),
         }
     }
 }

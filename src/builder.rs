@@ -8,6 +8,7 @@ use super::style::{
     Color,
     Alignment,
     Direction,
+    Font,
 };
 
 
@@ -120,7 +121,7 @@ impl Builder {
         self
     }
 
-    pub fn padding(&mut self, top: i8, left: i8, bottom: i8, right: i8) -> Result {
+    pub fn padding(&mut self, top: u16, left: u16, bottom: u16, right: u16) -> Result {
         self.add_style(Style::Padding(top, left, bottom, right))
     }   
 
@@ -134,6 +135,14 @@ impl Builder {
 
     pub fn alignment(&mut self, a: Alignment) -> Result {
         self.add_style(Style::Alignment(a))
+    }
+
+    pub fn bold(&mut self) -> Result {
+        self.add_style(Style::Bold)
+    }
+
+    pub fn font(&mut self, f: Font) -> Result {
+        self.add_style(Style::Font(f))
     }
 }
 
