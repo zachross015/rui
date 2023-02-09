@@ -67,7 +67,7 @@ impl Display for Style {
                 Alignment::Trailing => write!(f, "align-items: flex-end;"),
             }
             Style::Bold => write!(f, "font-weight: bold;"),
-            Style::Font(fs) => write!(f, "font-size: {}px", fs.size),
+            Style::Font(fs) => write!(f, "font-size: {}px;", fs.size),
         }
     }
 }

@@ -1,12 +1,12 @@
 use std::fmt::Debug;
-use super::builder::Builder;
+use crate::builder::Builder;
 
 /// Type for communicating Builder / Error signals that result from the output 
 /// of the `Builder` class. Should be used to chain together builders via ? notation.
 pub type Result<'a> = &'a mut Builder;
 
 /// Trait for defining how a struct can be interpreted as a view.
-pub trait View: Debug {
+pub trait StaticView: Debug {
 
     /// Defines how a *V*iew *B*uilde*r* is used with the fields of this struct 
     /// to define a view.
@@ -28,5 +28,5 @@ pub trait View: Debug {
     ///     }
     /// }
     /// ```
-    fn vbr<'a>(&'a mut self, v: &'a mut Builder) -> Result; 
+    fn view<'a>(&'a self, v: &'a mut Builder) -> Result; 
 }

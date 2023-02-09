@@ -1,9 +1,9 @@
 use std::collections::LinkedList;
 use std::fmt::Display;
 
-use super::types::{Result, View};
-use super::prototype::Prototype;
-use super::style::{
+use crate::types::{Result, StaticView};
+use crate::prototype::Prototype;
+use crate::style::{
     Style,
     Color,
     Alignment,
@@ -20,12 +20,12 @@ use super::style::{
 /// altered using state management.
 ///
 /// This class should never be explicitly created, as the `Application` should handle the Builder's
-/// lifecycle. Instead, the properties here should be used in the trait immplementation of `View`.
-/// This is where the View should be contstructed on a per-struct basis.
+/// lifecycle. Instead, the properties here should be used in the trait immplementation of `StaticView`.
+/// This is where the StaticView should be contstructed on a per-struct basis.
 #[derive(Debug)]
 pub struct Builder {
     tree: LinkedList<Prototype>,
-    linked_views: Vec<Box<dyn View>>
+    linked_views: Vec<Box<dyn StaticView>>
 }
 
 impl Builder {
@@ -52,7 +52,7 @@ impl Builder {
     /// ```
     /// #[derive(Debug)]
     /// struct Dummy { }
-    /// impl View for Dummy  {
+    /// impl StaticView for Dummy  {
     ///     fn vbr<'a>(&'a mut self, v: &'a mut Builder) -> Result {
     ///         v.container(|v| {
     ///             v.text("Hello")?;
@@ -66,7 +66,7 @@ impl Builder {
     /// ```
     /// #[derive(Debug)]
     /// struct Dummy { }
-    /// impl View for Dummy  {
+    /// impl StaticView for Dummy  {
     ///     fn vbr<'a>(&'a mut self, v: &'a mut Builder) -> Result {
     ///         v.container(|v| {
     ///             v.container(|v| {
@@ -110,8 +110,8 @@ impl Builder {
     /// # Arguments
     ///
     /// * `T` - A custom, pre-defined view.
-    pub fn view<T: View + 'static>(&mut self, mut t: T) -> Result {
-        t.vbr(self);
+    pub fn view<T: StaticView + 'static>(&mut self, t: T) -> Result {
+        t.view(self);
         self.linked_views.push(Box::new(t));
         self
     }

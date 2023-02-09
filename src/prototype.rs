@@ -1,8 +1,8 @@
 use std::fmt::Display;
-use super::builder::Builder;
 use Type::{Value, Container};
 
-use super::style::Style;
+use crate::builder::Builder;
+use crate::style::Style;
 
 #[derive(Debug)]
 pub enum Type {
