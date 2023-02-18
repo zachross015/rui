@@ -6,7 +6,7 @@ use crate::builder::Builder;
 pub type Result<'a> = &'a mut Builder;
 
 /// Trait for defining how a struct can be interpreted as a view.
-pub trait StaticView: Debug {
+pub trait View: Debug {
 
     /// Defines how a *V*iew *B*uilde*r* is used with the fields of this struct 
     /// to define a view.

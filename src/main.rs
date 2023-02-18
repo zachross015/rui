@@ -1,6 +1,6 @@
-use vbr::types::{StaticView, Result};
+use vbr::types::{View, Result};
 use vbr::builder::Builder;
-use vbr::application::BasicApplication;
+use vbr::application::{Application, WebApplication};
 
 
 #[derive(Debug)]
@@ -12,7 +12,7 @@ impl Text {
         Self { text: text.to_string() }
     }
 }
-impl StaticView for Text {
+impl View for Text {
     fn view<'a>(&'a self, v: &'a mut Builder) -> Result {
         v.text(&self.text)
     }
@@ -25,13 +25,13 @@ impl Dummy {
         Self {  }
     }
 }
-impl StaticView for Dummy {
+impl View for Dummy {
     fn view<'a>(&'a self, v: &'a mut Builder) -> Result {
         v.view(Text::new("Hello World")).bold()
     }
 }
 
 fn main() {
-    println!("{}", BasicApplication::new(Dummy::new()));
+    println!("{}", WebApplication::new(Dummy::new()).run());
 }
 

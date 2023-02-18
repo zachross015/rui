@@ -1,5 +1,3 @@
-use std::fmt::Display;
-
 #[derive(Debug)]
 pub enum Direction {
     Horizontal,
@@ -28,6 +26,22 @@ impl Color {
     pub fn rgb(r: u8, g: u8, b: u8) -> Self {
         Self { r: r, g: g, b: b, a: 255 }
     }
+
+    pub fn red(&self) -> u8 {
+        self.r
+    }
+
+    pub fn blue(&self) -> u8 {
+        self.b
+    }
+
+    pub fn green(&self) -> u8 {
+        self.g
+    }
+
+    pub fn alpha(&self) -> u8 {
+        self.a
+    }
 }
 
 #[derive(Debug)]
@@ -35,8 +49,12 @@ pub struct Font {
     size: u16,
 }
 impl Font {
-    pub fn size(size: u16) -> Self {
+    pub fn new(size: u16) -> Self {
         Self { size: size }
+    }
+
+    pub fn size(&self) -> u16 {
+        self.size
     }
 }
 
@@ -49,26 +67,5 @@ pub enum Style {
     Alignment(Alignment),
     Bold,
     Font(Font),
-}
-
-impl Display for Style {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Style::Padding(t, l, b, r) => write!(f, "padding: {}px {}px {}px {}px;", t, l, b, r),
-            Style::ForegroundColor(c) => write!(f, "color: rgba({}, {}, {}, {});", c.r, c.g, c.b, c.a),
-            Style::BackgroundColor(c) => write!(f, "background-color: rgba({}, {}, {}, {});", c.r, c.g, c.b, c.a),
-            Style::Direction(a) => match a {
-                Direction::Horizontal => write!(f, "flex-direction: row;"),
-                Direction::Vertical => write!(f, "flex-direction: column;"),
-            }
-            Style::Alignment(a) => match a {
-                Alignment::Leading => write!(f, "align-items: flex-start;"),
-                Alignment::Center => write!(f, "align-items: baseline;"),
-                Alignment::Trailing => write!(f, "align-items: flex-end;"),
-            }
-            Style::Bold => write!(f, "font-weight: bold;"),
-            Style::Font(fs) => write!(f, "font-size: {}px;", fs.size),
-        }
-    }
 }
 

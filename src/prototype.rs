@@ -1,6 +1,4 @@
-use std::fmt::Display;
 use Type::{Value, Container};
-
 use crate::builder::Builder;
 use crate::style::Style;
 
@@ -36,14 +34,13 @@ impl Prototype {
     pub fn add_style(&mut self, style: Style) {
         self.styles.push(style);
     }
-}
 
-impl Display for Prototype {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let style = self.styles.iter().map(|x| x.to_string()).collect::<String>();
-        match &self.contents {
-            Value(s) => write!(f, "<div style=\"display:flex;justify-content:center;align-items:center;\"><p style=\"margin:0;display:inline-flex;{}\">{}</p></div>", style, s),
-            Container(b) => write!(f, "<div style=\"display:flex;{}\">{}</div>", style, b),
-        } 
+    pub fn styles(&self) -> &Vec<Style> {
+        &self.styles
+    }
+
+    pub fn contents(&self) -> &Type {
+        &self.contents
     }
 }
+

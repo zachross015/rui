@@ -1,7 +1,6 @@
 use std::collections::LinkedList;
-use std::fmt::Display;
 
-use crate::types::{Result, StaticView};
+use crate::types::{Result, View};
 use crate::prototype::Prototype;
 use crate::style::{
     Style,
@@ -20,12 +19,12 @@ use crate::style::{
 /// altered using state management.
 ///
 /// This class should never be explicitly created, as the `Application` should handle the Builder's
-/// lifecycle. Instead, the properties here should be used in the trait immplementation of `StaticView`.
-/// This is where the StaticView should be contstructed on a per-struct basis.
+/// lifecycle. Instead, the properties here should be used in the trait immplementation of `View`.
+/// This is where the View should be contstructed on a per-struct basis.
 #[derive(Debug)]
 pub struct Builder {
     tree: LinkedList<Prototype>,
-    linked_views: Vec<Box<dyn StaticView>>
+    linked_views: Vec<Box<dyn View>>
 }
 
 impl Builder {
@@ -36,6 +35,10 @@ impl Builder {
             tree: LinkedList::new(),
             linked_views: Vec::new(),
         }
+    }
+
+    pub fn tree(&self) -> &LinkedList<Prototype> {
+        &self.tree
     }
 
     /// Constructs a container (e.g. vstack, hstack, etc) in the current builder.
@@ -52,7 +55,7 @@ impl Builder {
     /// ```
     /// #[derive(Debug)]
     /// struct Dummy { }
-    /// impl StaticView for Dummy  {
+    /// impl View for Dummy  {
     ///     fn vbr<'a>(&'a mut self, v: &'a mut Builder) -> Result {
     ///         v.container(|v| {
     ///             v.text("Hello")?;
@@ -66,7 +69,7 @@ impl Builder {
     /// ```
     /// #[derive(Debug)]
     /// struct Dummy { }
-    /// impl StaticView for Dummy  {
+    /// impl View for Dummy  {
     ///     fn vbr<'a>(&'a mut self, v: &'a mut Builder) -> Result {
     ///         v.container(|v| {
     ///             v.container(|v| {
@@ -110,7 +113,7 @@ impl Builder {
     /// # Arguments
     ///
     /// * `T` - A custom, pre-defined view.
-    pub fn view<T: StaticView + 'static>(&mut self, t: T) -> Result {
+    pub fn view<T: View + 'static>(&mut self, t: T) -> Result {
         t.view(self);
         self.linked_views.push(Box::new(t));
         self
@@ -143,12 +146,5 @@ impl Builder {
 
     pub fn font(&mut self, f: Font) -> Result {
         self.add_style(Style::Font(f))
-    }
-}
-
-impl Display for Builder {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let s = self.tree.iter().map(|x| x.to_string()).collect::<String>();
-        write!(f, "{}", s)
     }
 }
