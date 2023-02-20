@@ -1,5 +1,5 @@
 pub trait Application {
-    fn run(&self) -> String;
+    fn run(&mut self);
 }
 
 pub mod web_application;

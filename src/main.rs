@@ -32,6 +32,6 @@ impl View for Dummy {
 }
 
 fn main() {
-    println!("{}", WebApplication::new(Dummy::new()).run());
+    WebApplication::new(Dummy::new()).run();
 }
 

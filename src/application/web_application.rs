@@ -48,7 +48,7 @@ impl<T: View> WebApplication<T> {
 }
 
 impl<T: View> Application for WebApplication<T> {
-    fn run(&self) -> String {
+    fn run(&mut self) {
         let mut vbr = Builder::new();
         self.root_view.view(&mut vbr);
         self.format_builder(&vbr)
