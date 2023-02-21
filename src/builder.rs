@@ -114,7 +114,7 @@ impl Builder {
     /// # Arguments
     ///
     /// * `T` - A custom, pre-defined view.
-    pub fn view<T: View + 'static>(&mut self, t: T) -> &mut Builder {
+    pub fn view<T: View + 'static>(&mut self, mut t: T) -> &mut Builder {
         t.view(self);
         self.linked_views.push(Rc::new(RefCell::new(t)));
         self

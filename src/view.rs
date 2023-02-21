@@ -24,5 +24,5 @@ pub trait View: Debug {
     ///     }
     /// }
     /// ```
-    fn view<'a>(&'a self, v: &'a mut Builder) -> &'a mut Builder; 
+    fn view<'a>(&mut self, v: &'a mut Builder) -> &'a mut Builder; 
 }
