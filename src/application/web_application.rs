@@ -2,7 +2,8 @@ use crate::prototype::{Type, Prototype};
 use crate::style::{Style, Direction, Alignment};
 use crate::types::View;
 use crate::builder::Builder;
-use crate::application::Application;
+
+pub use crate::application::Application;
 
 pub struct WebApplication<T: View> {
     root_view: T

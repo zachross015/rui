@@ -68,4 +68,3 @@ pub enum Style {
     Bold,
     Font(Font),
 }
-

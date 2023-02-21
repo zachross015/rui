@@ -1,5 +1,5 @@
-use vbr::types::{View, Result};
-use vbr::builder::Builder;
+use vbr::style::Font;
+use vbr::types::{View, ViewBuilder};
 use vbr::application::{Application, WebApplication};
 
 
@@ -13,7 +13,7 @@ impl Text {
     }
 }
 impl View for Text {
-    fn view<'a>(&'a self, v: &'a mut Builder) -> Result {
+    fn view<'a>(&self, v: ViewBuilder<'a>) -> ViewBuilder<'a> {
         v.text(&self.text)
     }
 }
@@ -26,12 +26,14 @@ impl Dummy {
     }
 }
 impl View for Dummy {
-    fn view<'a>(&'a self, v: &'a mut Builder) -> Result {
-        v.view(Text::new("Hello World")).bold()
+    fn view<'a>(&self, v: ViewBuilder<'a>) -> ViewBuilder<'a> {
+        v.view(Text::new("Hello World"))
+            .bold()
+            .font(Font::new(32))
     }
 }
 
 fn main() {
-    println!("{}", WebApplication::new(Dummy::new()).run());
+    println!("{:#?}", WebApplication::new(Dummy::new()).run());
 }
 

@@ -3,7 +3,7 @@ use crate::builder::Builder;
 
 /// Type for communicating Builder / Error signals that result from the output 
 /// of the `Builder` class. Should be used to chain together builders via ? notation.
-pub type Result<'a> = &'a mut Builder;
+pub type ViewBuilder<'a> = &'a mut Builder;
 
 /// Trait for defining how a struct can be interpreted as a view.
 pub trait View: Debug {
@@ -28,5 +28,5 @@ pub trait View: Debug {
     ///     }
     /// }
     /// ```
-    fn view<'a>(&'a self, v: &'a mut Builder) -> Result; 
+    fn view<'a>(&'a self, v: ViewBuilder<'a>) -> ViewBuilder<'a>; 
 }
