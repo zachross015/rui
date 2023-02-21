@@ -1,6 +1,6 @@
 use crate::prototype::{Type, Prototype};
 use crate::style::{Style, Direction, Alignment};
-use crate::types::View;
+use crate::view::View;
 use crate::builder::Builder;
 
 pub use crate::application::Application;
@@ -10,6 +10,11 @@ pub struct WebApplication<T: View> {
 }
 
 impl<T: View> WebApplication<T> {
+
+    /// Constructs a web application with a root view defined as view.
+    ///
+    /// # Arguments
+    /// * `view` - View to be defined as the root view.
     pub fn new(view: T) -> Self {
         Self { root_view: view }
     }
@@ -44,14 +49,13 @@ impl<T: View> WebApplication<T> {
 
     fn format_builder(&self, vbr: &Builder) -> String {
         let s = vbr.tree().iter().map(|x| self.match_prototype(x)).collect::<String>();
-        format!("{}", s)
+        format!("<body style=\"position: absolute; min-height: 100vh; min-width: 100vw; margin: 0; display: flex; flex-direction: row; justify-content: center; align-items: center;\">{}</body>", s)
     }
 }
 
 impl<T: View> Application for WebApplication<T> {
-    fn run(&self) -> String {
-        let mut vbr = Builder::new();
-        self.root_view.view(&mut vbr);
-        self.format_builder(&vbr)
+    fn run(&mut self, vbr: &mut Builder) {
+        self.root_view.view(vbr);
+        println!("{}", self.format_builder(&vbr));
     }    
 }

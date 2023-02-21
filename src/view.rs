@@ -1,10 +1,6 @@
 use std::fmt::Debug;
 use crate::builder::Builder;
 
-/// Type for communicating Builder / Error signals that result from the output 
-/// of the `Builder` class. Should be used to chain together builders via ? notation.
-pub type ViewBuilder<'a> = &'a mut Builder;
-
 /// Trait for defining how a struct can be interpreted as a view.
 pub trait View: Debug {
 
@@ -23,10 +19,10 @@ pub trait View: Debug {
     /// #[derive(Debug)]
     /// struct HelloWorld { }
     /// impl View for HelloWorld {
-    ///     fn vbr<'a>(&'a mut self, v: &'a mut Builder) -> Result {
+    ///     fn vbr<'a>(&'a mut self, v: ViewBuilder<'a>) -> ViewBuilder<'a> {
     ///         v.text("Hello World")
     ///     }
     /// }
     /// ```
-    fn view<'a>(&'a self, v: ViewBuilder<'a>) -> ViewBuilder<'a>; 
+    fn view<'a>(&'a self, v: &'a mut Builder) -> &'a mut Builder; 
 }
