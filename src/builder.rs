@@ -22,6 +22,8 @@ use crate::style::{
 /// This class should never be explicitly created, as the `Application` should handle the Builder's
 /// lifecycle. Instead, the properties here should be used in the trait immplementation of `View`.
 /// This is where the View should be contstructed on a per-struct basis.
+/// TODO: Add type state which indicates specific things, for example the builder should start with 
+/// NoState and when v.text is called, this should return a Builder with Text state
 #[derive(Debug)]
 pub struct Builder {
     tree: LinkedList<Prototype>,
