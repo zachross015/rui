@@ -1,10 +1,4 @@
 #[derive(Debug)]
-pub enum Direction {
-    Horizontal,
-    Vertical,
-}
-
-#[derive(Debug)]
 pub enum Alignment {
     Leading,
     Center,
@@ -63,7 +57,6 @@ pub enum Style {
     Padding(u16, u16, u16, u16),
     ForegroundColor(Color),
     BackgroundColor(Color),
-    Direction(Direction),
     Alignment(Alignment),
     Bold,
     Font(Font),

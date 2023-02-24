@@ -1,8 +1,6 @@
-mod prototype;
 pub mod style;
 pub mod view;
-pub mod builder;
-pub mod application;
+pub mod viewable;
 
+pub use viewable::{Viewable, view};
 pub use view::View;
-pub use builder::Builder;

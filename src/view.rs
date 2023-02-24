@@ -1,28 +1,77 @@
 use std::fmt::Debug;
-use crate::builder::Builder;
 
-/// Trait for defining how a struct can be interpreted as a view.
-pub trait View: Debug {
+use crate::style::{
+    Style,
+    Color,
+    Alignment,
+    Font,
+};
 
-    /// Defines how a *V*iew *B*uilde*r* is used with the fields of this struct 
-    /// to define a view.
-    ///
-    /// # Arguments
-    ///
-    /// * `v` - Shorthand for `vbr`, the injected builder to *build* a view for.
-    ///
-    /// # Examples 
-    ///
-    /// A "Hello World" view can be constructed fairly simply using just a text 
-    /// field.
-    /// ```
-    /// #[derive(Debug)]
-    /// struct HelloWorld { }
-    /// impl View for HelloWorld {
-    ///     fn vbr<'a>(&'a mut self, v: ViewBuilder<'a>) -> ViewBuilder<'a> {
-    ///         v.text("Hello World")
-    ///     }
-    /// }
-    /// ```
-    fn view<'a>(&mut self, v: &'a mut Builder) -> &'a mut Builder; 
+#[derive(Debug)]
+enum Contents {
+    Subviews(Vec<View>),
+    Value(String),
+    Empty,
+}
+
+impl Default for Contents {
+    fn default() -> Self {
+        Contents::Empty
+    }
+}
+
+#[derive(Debug, Default)]
+pub struct View {
+    properties: Vec<Style>,
+    contents: Contents,
+}
+
+impl View {
+
+    pub fn empty() -> Self {
+        View::default()
+    }
+
+    pub fn text(t: impl Into<String>) -> Self {
+        View {
+            properties: Vec::default(),
+            contents: Contents::Value(t.into()),
+        }
+    }
+
+    pub fn container(v: Vec<View>) -> Self {
+        View {
+            properties: Vec::default(),
+            contents: Contents::Subviews(v),
+        }
+    }
+
+    fn add_style(mut self, style: Style) -> View {
+        self.properties.push(style);
+        self
+    }
+
+    pub fn padding(self, top: u16, left: u16, bottom: u16, right: u16) -> View {
+        self.add_style(Style::Padding(top, left, bottom, right))
+    }   
+
+    pub fn foreground_color(self, c: Color) -> View {
+        self.add_style(Style::ForegroundColor(c))
+    }   
+
+    pub fn background_color(self, c: Color) -> View {
+        self.add_style(Style::BackgroundColor(c))
+    }   
+
+    pub fn alignment(self, a: Alignment) -> View {
+        self.add_style(Style::Alignment(a))
+    }
+
+    pub fn bold(self) -> View {
+        self.add_style(Style::Bold)
+    }
+
+    pub fn font(self, f: Font) -> View {
+        self.add_style(Style::Font(f))
+    }
 }
