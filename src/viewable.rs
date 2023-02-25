@@ -14,9 +14,3 @@ impl Viewable for str {
         View::text(self)
     }
 }
-
-impl<T: Viewable> Viewable for Vec<T> {
-    fn view(&self) -> View {
-        View::container(self.iter().map(|x| view(x)).collect())
-    }
-}

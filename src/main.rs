@@ -7,12 +7,9 @@ struct Dummy;
 
 impl Viewable for Dummy {
     fn view(&self) -> View {
-        view("I'm a dummy View")
+        "I'm a dummy View".view()
             .padding(0, 0, 0, 0)
-            .alignment(Alignment::Center);
-        view(
-            ("Hello", "My", "Name")
-        )
+            .alignment(Alignment::Center)
     } 
 }
 
