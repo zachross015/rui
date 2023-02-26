@@ -1,6 +1,6 @@
 pub mod style;
 pub mod view;
-pub mod viewable;
+pub mod customizable;
 
-pub use viewable::{Viewable, view};
 pub use view::View;
+pub use customizable::Customizable;

@@ -1,18 +1,33 @@
-use vbr::{View, Viewable, view, style::Alignment};
+use vbr::{View, Customizable};
+use vbr::view::Text;
 // use vbr::application::{Application, WebApplication};
 
+macro_rules! view {
+    ($e:expr) => {
+        Box::new($e) 
+    };
+}
 
 #[derive(Debug)]
 struct Dummy; 
-
-impl Viewable for Dummy {
-    fn view(&self) -> View {
-        "I'm a dummy View".view()
-            .padding(0, 0, 0, 0)
-            .alignment(Alignment::Center)
+impl View for Dummy {
+    fn view(&self) -> Box<dyn View> {
+        view! {
+            Text::new("Hello World").padding(0, 0, 0, 0)
+        }
     } 
 }
 
+#[derive(Debug)]
+struct OtherDummy;
+impl View for OtherDummy {
+    fn view(&self) -> Box<dyn View> {
+        view! {
+            Dummy
+        }
+    }
+}
+
 pub fn main() {
-    println!("{:#?}", view(Dummy));
+    println!("{:#?}", OtherDummy.view().view());
 }
