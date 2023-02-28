@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Alignment",""],["Property",""]],"struct":[["Color",""],["Font",""]],"trait":[["Customizable",""]]};
+window.SIDEBAR_ITEMS = {"mod":[["alignment",""],["color",""],["customizable",""],["font",""],["property",""]]};

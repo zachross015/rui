@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["empty",""],["text",""]],"trait":[["View",""]]};
+window.SIDEBAR_ITEMS = {"mod":[["empty",""],["text",""],["view",""]]};
