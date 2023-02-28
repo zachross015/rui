@@ -1,3 +1,6 @@
+use std::marker::PhantomData;
+
+use vbr::style::Style;
 use vbr::{View, Customizable};
 use vbr::view::Text;
 // use vbr::application::{Application, WebApplication};
@@ -6,6 +9,43 @@ macro_rules! view {
     ($e:expr) => {
         Box::new($e) 
     };
+}
+
+
+#[derive(Debug, Default)]
+struct Undefined;
+
+#[derive(Debug, Default)]
+struct Vertical;
+
+#[derive(Debug, Default)]
+struct Horizontal;
+
+#[derive(Debug, Default)]
+struct Stack<T> {
+    views: Vec<Box<dyn View>>,
+    properties: Vec<Style>,
+    direction: PhantomData<T>
+}
+
+impl Stack<Undefined> {
+
+    pub fn vertical(self) -> Stack<Vertical> {
+        Stack::<Vertical> {
+            views: self.views,
+            properties: self.properties,
+            direction: PhantomData,
+        }
+    }
+    
+    pub fn horizontal(self) -> Stack<Horizontal> {
+        Stack::<Horizontal> {
+            views: self.views,
+            properties: self.properties,
+            direction: PhantomData,
+        }
+    }
+
 }
 
 #[derive(Debug)]
