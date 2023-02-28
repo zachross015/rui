@@ -1,4 +1,5 @@
-use crate::View;
+use std::fmt::Debug;
+use crate::view::View;
 
 #[derive(Debug)]
 pub struct Empty;

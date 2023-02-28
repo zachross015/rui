@@ -1,6 +1,5 @@
-use crate::{View, Customizable};
-use crate::view::Empty;
-use crate::property::Property;
+use crate::view::{View, Empty};
+use crate::property::{Customizable, Property};
 
 #[derive(Debug)]
 pub struct Text {

@@ -1,8 +1,7 @@
 use std::marker::PhantomData;
 
-use rui::property::Property;
-use rui::{View, Customizable};
-use rui::view::Text;
+use rui::property::{Property, Customizable};
+use rui::view::{View, Text};
 // use vbr::application::{Application, WebApplication};
 
 macro_rules! view {
