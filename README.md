@@ -1,3 +1,3 @@
-# View Builder
+# RustUI
 
-A rust library for efficient web development.
+A rust library for idiomatic application development.

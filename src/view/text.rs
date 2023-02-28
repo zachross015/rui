@@ -1,11 +1,11 @@
 use crate::{View, Customizable};
 use crate::view::Empty;
-use crate::style::Style;
+use crate::property::Property;
 
 #[derive(Debug)]
 pub struct Text {
     text: String,
-    properties: Vec<Style>,
+    properties: Vec<Property>,
 }
 impl Text {
     pub fn new(text: impl Into<String>) -> Self {
@@ -19,7 +19,7 @@ impl View for Text {
 }
 
 impl Customizable for Text {
-    fn properties(&mut self) -> &mut Vec<Style> {
+    fn properties(&mut self) -> &mut Vec<Property> {
         &mut self.properties
     }
 }

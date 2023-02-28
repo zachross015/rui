@@ -1,6 +1,5 @@
-pub mod style;
+pub mod property;
 pub mod view;
-pub mod customizable;
 
 pub use view::View;
-pub use customizable::Customizable;
+pub use property::Customizable;

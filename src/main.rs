@@ -1,8 +1,8 @@
 use std::marker::PhantomData;
 
-use vbr::style::Style;
-use vbr::{View, Customizable};
-use vbr::view::Text;
+use rui::property::Property;
+use rui::{View, Customizable};
+use rui::view::Text;
 // use vbr::application::{Application, WebApplication};
 
 macro_rules! view {
@@ -24,7 +24,7 @@ struct Horizontal;
 #[derive(Debug, Default)]
 struct Stack<T> {
     views: Vec<Box<dyn View>>,
-    properties: Vec<Style>,
+    properties: Vec<Property>,
     direction: PhantomData<T>
 }
 
