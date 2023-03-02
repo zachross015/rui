@@ -1,5 +1,3 @@
-use std::fmt::Debug;
-
 #[derive(Debug)]
 pub struct Color {
     r: u8,

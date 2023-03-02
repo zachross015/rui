@@ -1,5 +1,3 @@
-use std::fmt::Debug;
-
 use crate::property::{ 
     Property,
     Color,
@@ -7,7 +5,7 @@ use crate::property::{
     Alignment,
 };
 
-pub trait Customizable: Debug + Sized {
+pub trait Customizable: Sized {
     fn properties(&mut self) -> &mut Vec<Property>;
 
     fn add_style(mut self, style: Property) -> Self {

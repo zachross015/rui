@@ -1,7 +1,6 @@
-use crate::view::{View, Empty};
+use crate::view::{View, Viewable};
 use crate::property::{Customizable, Property};
 
-#[derive(Debug)]
 pub struct Text {
     text: String,
     properties: Vec<Property>,
@@ -11,9 +10,9 @@ impl Text {
         Self { text: text.into(), properties: Vec::new(), }
     }
 }
-impl View for Text {
-    fn view(&self) -> Box<dyn View> {
-        Box::new(Empty)
+impl Viewable for Text {
+    fn view(&self) -> View {
+        View::Text
     }
 }
 
