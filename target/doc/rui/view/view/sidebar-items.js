@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":[["View",""]]};
+window.SIDEBAR_ITEMS = {"enum":[["View",""]],"trait":[["Viewable",""]]};

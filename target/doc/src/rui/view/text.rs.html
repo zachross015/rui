@@ -21,12 +21,10 @@
 <span id="21">21</span>
 <span id="22">22</span>
 <span id="23">23</span>
-<span id="24">24</span>
-</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::view::{View, Empty};
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::view::{View, Viewable};
 <span class="kw">use </span><span class="kw">crate</span>::property::{Customizable, Property};
 
-<span class="attribute">#[derive(Debug)]
-</span><span class="kw">pub struct </span>Text {
+<span class="kw">pub struct </span>Text {
     text: String,
     properties: Vec&lt;Property&gt;,
 }
@@ -35,9 +33,9 @@
         <span class="self">Self </span>{ text: text.into(), properties: Vec::new(), }
     }
 }
-<span class="kw">impl </span>View <span class="kw">for </span>Text {
-    <span class="kw">fn </span>view(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span>View&gt; {
-        Box::new(Empty)
+<span class="kw">impl </span>Viewable <span class="kw">for </span>Text {
+    <span class="kw">fn </span>view(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; View {
+        View::Text
     }
 }
 

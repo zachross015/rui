@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["rui","vbr"];
+window.ALL_CRATES = ["rui"];
