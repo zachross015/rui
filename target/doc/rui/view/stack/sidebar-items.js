@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":[["Horizontal",""],["Stack",""],["Undefined",""],["Vertical",""]]};
