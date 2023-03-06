@@ -1,44 +1,33 @@
 use rui::property::{Customizable};
-use rui::view::{View, Viewable, Text, Stack};
-// use vbr::application::{Application, WebApplication};
-
-macro_rules! view {
-    ($e:expr) => {
-        View::new($e)
-    };
-}
 
 
 #[derive(Debug)]
-struct Dummy; 
-impl Viewable for Dummy {
-    fn view(&self) -> View {
-        view! {
-            Text::new("Hello World").padding(0, 0, 0, 0)
-        }
-    } 
+enum View {
+    Empty,
+    Text(String),
+    HStack(Vec<View>),
+    VStack(Vec<View>),
 }
 
-#[derive(Debug)]
-struct OtherDummy;
-impl Viewable for OtherDummy {
-    fn view(&self) -> View {
-        view! {
-            Dummy
-        }
-    }
+fn text(text: impl Into<String>) -> View {
+    View::Text(text.into())
 }
 
-#[derive(Debug)]
-struct StackedDummy;
-impl Viewable for StackedDummy {
-    fn view(&self) -> View {
-        Stack::new({
-            vec![Text::new("Hello World").view()]
-        }).horizontal().view()
-    }
+fn hstack(stack: Vec<View>) -> View {
+    View::HStack(stack)
+}
+
+fn hello_world() -> View {
+   text("Hello World!")
+}
+
+fn stacked() -> View {
+    hstack(vec!{
+        hello_world(),
+        text("Goodbye World")
+    })
 }
 
 pub fn main() {
-
+    println!("{:#?}", stacked())
 }
