@@ -1,30 +1,16 @@
-use rui::property::{Customizable};
+use rui::property::{Customizable, Color};
+use rui::view::View;
 
-
-#[derive(Debug)]
-enum View {
-    Empty,
-    Text(String),
-    HStack(Vec<View>),
-    VStack(Vec<View>),
-}
-
-fn text(text: impl Into<String>) -> View {
-    View::Text(text.into())
-}
-
-fn hstack(stack: Vec<View>) -> View {
-    View::HStack(stack)
-}
 
 fn hello_world() -> View {
-   text("Hello World!")
+   View::text("Hello World!")
+       .foreground_color(Color::rgba(100, 100, 100, 100))
 }
 
 fn stacked() -> View {
-    hstack(vec!{
+    View::hstack(vec!{
         hello_world(),
-        text("Goodbye World")
+        View::text("Goodbye World")
     })
 }
 
