@@ -14,6 +14,12 @@ fn stacked() -> View {
     })
 }
 
+
+pub trait Viewable {
+    fn create() -> Self;  
+    fn view(&self) -> View; 
+}
+
 pub fn main() {
     println!("{:#?}", stacked())
 }

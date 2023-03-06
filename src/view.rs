@@ -35,3 +35,4 @@ impl Customizable for View {
         &mut self.properties
     }
 }
+
