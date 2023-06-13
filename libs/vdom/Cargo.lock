@@ -3,12 +3,5 @@
 version = 3
 
 [[package]]
-name = "rui"
-version = "0.1.0"
-dependencies = [
- "vdom",
-]
-
-[[package]]
 name = "vdom"
 version = "0.1.0"
