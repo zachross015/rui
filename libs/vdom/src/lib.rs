@@ -1,114 +1,117 @@
-/*struct State<T> {
-    wrapped_value: T,
-    updated: bool
-}
+pub mod tree;
 
-impl<T> State<T> {
-    pub fn new(wrapped_value: T) -> Self {
-        Self { wrapped_value: wrapped_value, updated: false }
-    }
+use std::{rc::Rc, fmt::Display, cell::RefCell};
 
-    pub fn get(&self) -> &T {
-        &self.wrapped_value
-    }
+use tree::*;
 
-    pub fn get_mut(&mut self) -> &mut T {
-        self.updated = true;
-        &mut self.wrapped_value
-    }
-}
-
-
-enum View {
-    Empty,
-    Text(State<String>)
-}
-
-trait Viewable {
-    fn view(&self) -> View; 
-}
-
-struct Testing {}
-impl Viewable for Testing {
-    fn view(&self) -> View {
-        let string = State::new(String::from("Hello World"));
-        View::Text(string)
-    }
-}
-*/
-
-use std::{rc::Rc, cell::RefCell};
-
-#[derive(Debug, PartialEq)]
-pub enum VDOMElement {
+pub enum VElement {
     Text(String),
+    View(Rc<View>),
 }
 
-#[derive(PartialEq)]
-pub struct Tree<T> {
-    pub value: Option<T>,
-    pub children: Vec<Rc<RefCell<Tree<T>>>>,
-}
-
-impl<T> Tree<T> {
-    pub fn new() -> Self {
-        Self {
-            value: None,
-            children: vec![],
+impl Display for VElement {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            VElement::Text(s) => write!(f, "Text(\"{s}\")"),
+            VElement::View(v) => write!(f, "View({v})"),
         }
     }
+}
 
-    pub fn add_child(&mut self, node: Tree<T>) {
-        let child = Rc::new(RefCell::new(node));
-        self.children.push(child);
+type VNode = Tree<VElement>;
+
+impl VNode {
+    pub fn text(string: impl Into<String>) -> Self {
+        let mut tree = VNode::new();
+        tree.value = Some(VElement::Text(string.into()));
+        tree
     }
 
-    pub fn nth_child(&self, n: usize) -> Rc<RefCell<Tree<T>>> {
-        Rc::clone(&self.children[n])
+    pub fn view(view: View) -> Self {
+        let mut tree = VNode::new();
+        tree.value = Some(VElement::View(Rc::new(view)));
+        tree
     }
 
-    pub fn width(&self) -> usize {
-        self.children.len()
+
+    /** Helper function for formatting nested VNodes when printing to a string.
+     *
+     */
+    fn nested_fmt(&self, depth: usize, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.value.as_ref().map(|x| write!(f, "{:indent$}{}", "", x, indent=depth*4));
+        for child in self.children.iter() {
+            let val = child.borrow();
+            val.nested_fmt(depth + 1, f)?;
+        }
+        Ok(())
+    }
+
+}
+
+impl Display for VNode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.nested_fmt(0, f)
     }
 }
 
+pub struct View {
+    render: Box<dyn Fn() -> VNode>,
+}
+
+impl View {
+    pub fn new<T: Fn() -> VNode + 'static>(render: T) -> Self {
+        Self { render: Box::new(render)  }
+    }
+
+    pub fn render(&self) -> VNode {
+        (self.render)()
+    }
+}
+
+impl Display for View {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.render()) 
+    }
+}
+
+macro_rules! view {
+    ($func:expr) => {
+        View::new(|| $func) 
+    };
+}
 
 #[cfg(test)]
 mod tests {
-    use std::fmt;
-    use std::borrow::Borrow;
+    use std::rc::Rc;
 
-    use super::*;
+    use crate::{View, VNode, VElement};
 
     #[test]
-    fn add_child_test() {
-        let mut tree = Tree::new();
-        let mut child = Tree::new();
-        child.value = Some(VDOMElement::Text(String::from("Hello")));
-        tree.add_child(child);
-        
-        let binding = tree.nth_child(0);
-        let val: &RefCell<_> = binding.borrow();
-        assert_eq!(val.borrow().value, Some(VDOMElement::Text(String::from("Hello"))));
+    fn print_velement_text_test() {
+        assert_eq!(format!("{}", VElement::Text(String::from("Hello World"))), "Text(\"Hello World\")")
     }
 
     #[test]
-    fn add_children_test() {
-        let mut tree = Tree::new();
-        for i in 0..10 {
-            let mut child = Tree::new();
-            child.value = Some(VDOMElement::Text(String::from(format!("{i}"))));
-            tree.add_child(child);
-        }
-
-        // Make sure all the elements were added.
-        assert_eq!(tree.width(), 10);
-        
-        // Make sure each element has the same number it was inserted with.
-        for i in 0..10 {
-            let binding = tree.nth_child(i);
-            let val: &RefCell<_> = binding.borrow();
-            assert_eq!(val.borrow().value, Some(VDOMElement::Text(String::from(format!("{i}")))));
-        }
+    fn print_vnode_text_test() {
+        assert_eq!(format!("{}", VNode::text("Hello World")), "Text(\"Hello World\")")
     }
+
+ 
+    #[test]
+    fn print_text_test() {
+        let view = View::new(|| VNode::text("Hello World"));
+        assert_eq!(format!("{}", view), "Text(\"Hello World\")")
+    }
+
+    #[test]
+    fn print_view_test() {
+        let view = view! {
+            VNode::view(view! {
+                VNode::text("Hello World")
+            })
+        };
+        assert_eq!(format!("{}", view), "View(Text(\"Hello World\"))")
+    }
+
 }
+
